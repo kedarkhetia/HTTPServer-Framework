@@ -24,13 +24,18 @@ public class SlackClient {
 		return slackClient;
 	}
 	
-	public boolean postMessage(String message) throws IOException {
-		connection = (HttpURLConnection) (new URL("https://slack.com/api/chat.postMessage?token="+API_TOKEN+"&channel="+CHANNEL+"&text=test:%20"+message)).openConnection();
-		connection.setRequestMethod("POST");
-		connection.setDoOutput(true);
-		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-		connection.connect();
-		return validateResponse(connection);
+	public boolean postMessage(String message) {
+		try {
+			connection = (HttpURLConnection) (new URL("https://slack.com/api/chat.postMessage?token="+API_TOKEN+"&channel="+CHANNEL+"&text=test:%20"+message)).openConnection();
+			connection.setRequestMethod("POST");
+			connection.setDoOutput(true);
+			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			connection.connect();
+			return validateResponse(connection);
+		} catch (IOException e) {
+			// TODO log exception
+		}
+		return false;
 	}
 	
 	private boolean validateResponse(URLConnection connection) throws IOException {

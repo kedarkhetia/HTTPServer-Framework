@@ -32,7 +32,7 @@ public class InvertedIndexBuilder {
 	 * @param filePath
 	 * @return InvertedIndexBuilder
 	 */
-	public InvertedIndexBuilder setFilePath(Path filePath) {
+	public synchronized InvertedIndexBuilder setFilePath(Path filePath) {
 		this.filePath = filePath;
 		return this;
 	}
@@ -43,7 +43,7 @@ public class InvertedIndexBuilder {
 	 * @param type
 	 * @return InvertedIndexBuilder
 	 */
-	public InvertedIndexBuilder setType(Class<?> type) {
+	public synchronized InvertedIndexBuilder setType(Class<?> type) {
 		this.type = type;
 		return this;
 	}
@@ -53,7 +53,7 @@ public class InvertedIndexBuilder {
 	 * 
 	 * @return InvertedIndex
 	 */
-	public InvertedIndex build() throws IOException {
+	public synchronized InvertedIndex build() throws IOException {
 		BufferedReader in = Files.newBufferedReader(filePath, StandardCharsets.ISO_8859_1);
 		String data;
 		while((data = in.readLine()) != null) {
@@ -81,7 +81,7 @@ public class InvertedIndexBuilder {
 	 * @param text
 	 * @return HashMap<String, Integer>
 	 */
-	private Map<String, Integer> getFrequency(String text) {
+	private synchronized Map<String, Integer> getFrequency(String text) {
 		String[] splitText = text.replaceAll("[^A-Za-z0-9 ]", "").toLowerCase().split(" ");
 		Map<String, Integer> frequency = new HashMap<String, Integer>(); 
 		for(String i : splitText) {

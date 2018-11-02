@@ -2,6 +2,7 @@ package cs601.project3.httpserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -35,7 +36,7 @@ public class HTTPServer implements Runnable{
 		try {
 			while(RUNNING_FLAG) {
 				Socket client = server.accept();
-				BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+				InputStream in = client.getInputStream();
 				PrintWriter out = new PrintWriter(client.getOutputStream());
 				threadPool.execute(new HTTPConnection(handlers, client, in, out));
 			}

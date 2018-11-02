@@ -31,7 +31,7 @@ public class InvertedIndex {
 	 * @param text, element
 	 * @return void
 	 */
-	public void add(String text, AmazonDataStructure element) {
+	public synchronized void add(String text, AmazonDataStructure element) {
 		add(text, element, 1);
 	}
 	
@@ -41,7 +41,7 @@ public class InvertedIndex {
 	 * @param text, element, frequency
 	 * @return void
 	 */
-	public void add(String text, AmazonDataStructure element, int frequency) {
+	public synchronized void add(String text, AmazonDataStructure element, int frequency) {
 		Tuple tuple = new Tuple();
 		tuple.setObject(element);
 		tuple.setFrequency(frequency);
@@ -62,7 +62,7 @@ public class InvertedIndex {
 	 * 
 	 * @return void
 	 */
-	public void sort(){
+	public synchronized void sort(){
 		for(String i : invertedIndex.keySet()) {
 			Collections.sort(invertedIndex.get(i));
 		}
@@ -76,7 +76,7 @@ public class InvertedIndex {
 	 * @param asin and element
 	 * @return void
 	 */
-	public void addToAsinIndex(String asin, AmazonDataStructure element) {
+	public synchronized void addToAsinIndex(String asin, AmazonDataStructure element) {
 		if(asinIndex.containsKey(asin)) {
 			if(!asinIndex.get(asin).contains(element)) {
 				asinIndex.get(asin).add(element);

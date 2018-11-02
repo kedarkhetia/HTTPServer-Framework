@@ -21,15 +21,15 @@ public class HTTPRequest {
 				this.params = addParamsToMap(temp[1]);
 			}
 			this.protocol = tokens[2];
+			if(!(this.method.equals("GET") || this.method.equals("POST")) || !this.protocol.startsWith("HTTP")) {
+				isValid = false;
+			}
+			else {
+				isValid = true;
+			}
 		}
 		else {
 			isValid = false;
-		}
-		if(!(this.method.equals("GET") || this.method.equals("POST")) || !this.protocol.startsWith("HTTP")) {
-			isValid = false;
-		}
-		else {
-			isValid = true;
 		}
 		this.request = request;
 	}

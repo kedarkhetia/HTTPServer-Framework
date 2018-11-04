@@ -12,6 +12,11 @@ public class HTTPRequest {
 	private boolean isValid;
 	
 	public HTTPRequest(String request) {
+		if(request == null || request.trim().isEmpty()) {
+			isValid = false;
+			this.request = request;
+			return;
+		}
 		String tokens[] = request.split("\n")[0].split("\\s+");
 		if(tokens.length == 3) {
 			this.method = tokens[0];
@@ -22,10 +27,10 @@ public class HTTPRequest {
 			}
 			this.protocol = tokens[2];
 			if(!(this.method.equals("GET") || this.method.equals("POST")) || !this.protocol.startsWith("HTTP")) {
-				isValid = false;
+				this.isValid = false;
 			}
 			else {
-				isValid = true;
+				this.isValid = true;
 			}
 		}
 		else {
@@ -39,7 +44,9 @@ public class HTTPRequest {
 		String[] paramList = paramString.split("\\&");
 		for(String i : paramList) {
 			String[] temp = i.split("=");
-			params.put(temp[0], temp[1]);
+			if(temp.length > 1) {
+				params.put(temp[0], temp[1]);
+			}
 		}
 		return params;
 	}

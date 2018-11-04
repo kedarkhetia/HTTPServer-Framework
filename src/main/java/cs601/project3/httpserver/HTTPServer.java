@@ -1,12 +1,11 @@
 package cs601.project3.httpserver;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,19 +15,27 @@ import cs601.project3.handler.Handler;
 public class HTTPServer implements Runnable{
 	private ServerSocket server;
 	private ExecutorService threadPool;
-	private ConcurrentHashMap<String, Handler> handlers;
+	private HashMap<String, Handler> handlers;
+	private int port;
 	
+	private static volatile boolean RUNNING_FLAG = false;
 	private static final int POOL_SIZE = 5;
-	private static volatile boolean RUNNING_FLAG = true;
 	
-	public HTTPServer(int port) throws IOException {
-		this.server = new ServerSocket(port);
-		this.threadPool = Executors.newFixedThreadPool(POOL_SIZE);
-		this.handlers = new ConcurrentHashMap<String, Handler>();
+	public HTTPServer(int port) {
+		try {
+			this.server = new ServerSocket(port);
+			this.threadPool = Executors.newFixedThreadPool(POOL_SIZE);
+			this.handlers = new HashMap<String, Handler>();
+			this.port = port;
+		} catch (IOException e) {
+			//TODO log something.
+		}
 	}
 	
 	public void addMapping(String path, Handler handler) {
-		handlers.put(path, handler);
+		if(path != null && handler != null) {
+			handlers.put(path, handler);
+		}
 	}
 	
 	@Override
@@ -47,11 +54,19 @@ public class HTTPServer implements Runnable{
 	}
 	
 	public void start() {
+		RUNNING_FLAG = true;
 		new Thread(this).start();
 	}
 	
 	public void stop() {
 		RUNNING_FLAG = false;
 	}
-
+	
+	public int getPort() {
+		return port;
+	}
+	
+	public boolean isRunning() {
+		return RUNNING_FLAG;
+	}
 }

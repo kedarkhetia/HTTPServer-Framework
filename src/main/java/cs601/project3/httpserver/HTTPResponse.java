@@ -9,20 +9,11 @@ public class HTTPResponse {
 	public String getProtocol() {
 		return protocol;
 	}
-	public void setProtocol(String method) {
-		this.protocol = method;
-	}
 	public int getStatusCode() {
 		return statusCode;
 	}
-	public void setStatusCode(int statusCode) {
-		this.statusCode = statusCode;
-	}
 	public String getStatus() {
 		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
 	}
 	public String getResponse() {
 		return response;
@@ -31,8 +22,21 @@ public class HTTPResponse {
 		this.response = response;
 	}
 	
+	public void setResponseHeader(String protocol, String status, int statusCode) {
+		this.protocol = protocol;
+		this.status = status;
+		this.statusCode = statusCode;
+	}
+	
 	public String getResponseHeader() {
 		return protocol + " " + statusCode + " " +
 				status + "\n\r\n";
+	}
+	
+	public boolean isValid() {
+		if(protocol != null && status != null && statusCode != 0 && response != null) {
+			return true;
+		}
+		return false;
 	}
 }

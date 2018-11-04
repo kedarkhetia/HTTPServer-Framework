@@ -5,19 +5,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import cs601.project3.defaulthandler.DefaultHandler;
-import cs601.project3.defaulthandler.ErrorHandler;
+import cs601.project3.defaulthandler.MethodNotAllowed;
+import cs601.project3.defaulthandler.PageNotFoundHandler;
 import cs601.project3.handler.Handler;
 
 public class HTTPConnection implements Runnable {
-	ConcurrentHashMap<String, Handler> handlers;
-	Socket client;
-	InputStream in;
-	PrintWriter out;
+	private HashMap<String, Handler> handlers;
+	private Socket client;
+	private InputStream in;
+	private PrintWriter out;
 	
-	public HTTPConnection(ConcurrentHashMap<String, Handler> handlers, Socket client, InputStream in, PrintWriter out) {
+	public HTTPConnection(HashMap<String, Handler> handlers, Socket client, InputStream in, PrintWriter out) {
 		this.handlers = handlers;
 		this.client = client;
 		this.in = in;
@@ -36,7 +37,7 @@ public class HTTPConnection implements Runnable {
 					length = Integer.parseInt(line.split(":")[1].trim());
 				}
 			}
-			requestString += "\n" + readParams(in, length);
+			requestString += "\n" + readBody(in, length);
 			HTTPRequest request = new HTTPRequest(requestString);
 			HTTPResponse response = getResponse(request);
 			out.write(response.getResponseHeader());
@@ -50,33 +51,33 @@ public class HTTPConnection implements Runnable {
 		}
 	}
 	
-	private HTTPResponse getResponse(HTTPRequest request) {
+	public HTTPResponse getResponse(HTTPRequest request) {
 		HTTPResponse response;
 		if(!request.isValid()) {
-			response = new ErrorHandler().handle(request);
+			response = new MethodNotAllowed().handle(request);
 		}
 		else {
 			if(handlers.containsKey(request.getPath())) {
 				response = handlers.get(request.getPath()).handle(request);
 			}
 			else {
-				response = new DefaultHandler().handle(request);
+				response = new PageNotFoundHandler().handle(request);
 			}
 		}
 		return response;
 	}
 
-	private String readLine(InputStream in) throws IOException {
+	public String readLine(InputStream in) throws IOException {
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		byte b = (byte) in.read();
-		while(b != '\n') {
+		while(b != '\n' && b != -1) {
 			bout.write(b);
 			b = (byte) in.read();
 		}
 		return new String(bout.toByteArray());
 	}
 	
-	private String readParams(InputStream in, int length) throws IOException {
+	public String readBody(InputStream in, int length) throws IOException {
 		byte[] bytes = new byte[length];
 		int read = in.read(bytes);
 		while(read < length) {

@@ -24,18 +24,19 @@ public class FindHandler implements Handler {
 		}
 	}
 
-	private synchronized HTTPResponse post(HTTPRequest request) {
+	public synchronized HTTPResponse post(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setProtocol("HTTP/1.1");
-		response.setStatus("OK");
-		response.setStatusCode(200);
-		String asin = request.getParams().get("asin");
+		response.setResponseHeader(request.getProtocol(), "OK", 200);
+		String asin = null;
+		if(request.getParams() != null) {
+			asin = request.getParams().get("asin");
+		}
 		List<AmazonDataStructure> datalist = invertedIndex.find(asin);
 		response.setResponse(getPostResponseString(datalist));
 		return response;
 	}
 	
-	private String getPostResponseString(List<AmazonDataStructure> datalist) {
+	public String getPostResponseString(List<AmazonDataStructure> datalist) {
 		String responseString = "<html>"
 				+ "\n\t<head>"
 				+ "\n\t\t<style>"
@@ -63,16 +64,14 @@ public class FindHandler implements Handler {
 		return responseString;
 	}
 
-	private synchronized HTTPResponse get(HTTPRequest request) {
+	public synchronized HTTPResponse get(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setProtocol("HTTP/1.1");
-		response.setStatus("OK");
-		response.setStatusCode(200);
+		response.setResponseHeader(request.getProtocol(), "OK", 200);
 		response.setResponse(getGetResponseString());
 		return response;
 	}
 	
-	private String getGetResponseString() {
+	public String getGetResponseString() {
 		return "<html>"
 				+ "\n\t<head><script>"
 				+ "function getUrl() {"

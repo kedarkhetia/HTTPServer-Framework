@@ -1,7 +1,5 @@
 package cs601.project3.slack;
 
-import java.io.IOException;
-
 import cs601.project3.handler.Handler;
 import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
@@ -20,9 +18,7 @@ public class ChatHandler implements Handler{
 
 	private HTTPResponse post(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setProtocol("HTTP/1.1");
-		response.setStatus("OK");
-		response.setStatusCode(200);
+		response.setResponseHeader(request.getProtocol(), "OK", 200);
 		String message = request.getParams().get("message");
 		response.setResponse(getResponseString(request, SlackClient.getInstance().postMessage(message)));
 		return response;
@@ -30,9 +26,7 @@ public class ChatHandler implements Handler{
 
 	private HTTPResponse get(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setProtocol("HTTP/1.1");
-		response.setStatus("OK");
-		response.setStatusCode(200);
+		response.setResponseHeader(request.getProtocol(), "OK", 200);
 		response.setResponse(getResponseString(request, true));
 		return response;
 	}

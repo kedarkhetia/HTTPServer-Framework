@@ -10,7 +10,7 @@ import java.net.URLConnection;
 import com.google.gson.Gson;
 
 public class SlackClient {
-	HttpURLConnection connection;
+	private HttpURLConnection connection;
 	private static final String API_TOKEN = "xoxp-469171308900-470394212087-468620883488-7f6aaf6df2f123197d5bc244856ca25a";
 	private static final String CHANNEL = "test";
 	private static SlackClient slackClient;

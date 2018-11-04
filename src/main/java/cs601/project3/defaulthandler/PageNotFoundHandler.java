@@ -4,20 +4,18 @@ import cs601.project3.handler.Handler;
 import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
 
-public class DefaultHandler implements Handler {
-
+public class PageNotFoundHandler implements Handler{
+	
 	@Override
 	public HTTPResponse handle(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setProtocol(request.getProtocol());
-		response.setStatusCode(200);
-		response.setStatus("OK");
+		response.setResponseHeader(request.getProtocol(), "error", 404);
 		response.setResponse("<html> " + 
-				"<head><title>TEST</title></head>" + 
-				"<body>This is a default " + request.getMethod() + " Method!"+
+				"<head><title>TEST</title></head>"
+				+ "<body>"
+				+ "Page Not Found!" +
 				"</body>" + 
 				"</html>");
 		return response;
 	}
-
 }

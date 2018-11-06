@@ -1,5 +1,6 @@
 package cs601.project3.invertedindex;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import cs601.project3.handler.Handler;
@@ -27,11 +28,18 @@ public class ReviewSearchHandler implements Handler{
 	public synchronized HTTPResponse post(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
 		response.setResponseHeader(request.getProtocol(), "OK", 200);
-		String searchText = null;
-		List<Tuple> reviews = null;
-		if(request.getParams() != null) {
-			searchText = request.getParams().get("query");
-			reviews = invertedIndex.search(searchText);
+		String[] searchText = null;
+		List<Tuple> reviews = new LinkedList<Tuple>();
+		if(!request.getParams().isEmpty()) {
+			searchText = request.getParams().get("query").split("\\s+");
+			for(String queryText : searchText){
+				if(queryText != null && !queryText.isEmpty()) {
+					List<Tuple> result = invertedIndex.search(queryText);
+					if(result != null) {
+						reviews.addAll(result);
+					}
+				}
+			}
 		}
 		response.setResponse(getPostResponseString(reviews));
 		return response;

@@ -1,5 +1,7 @@
 package cs601.project3.httpserver;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,45 +14,53 @@ public class HTTPRequest {
 	private boolean isValid;
 	
 	public HTTPRequest(String request) {
-		if(request == null || request.trim().isEmpty()) {
-			isValid = false;
-			this.request = request;
-			return;
-		}
-		String tokens[] = request.split("\n")[0].split("\\s+");
-		if(tokens.length == 3) {
-			this.method = tokens[0];
-			String[] temp = tokens[1].split("\\?");
-			this.path = temp[0];
-			if(temp.length > 1) {
-				this.params = addParamsToMap(temp[1]);
+		try {
+			if(request == null || request.trim().isEmpty()) {
+				isValid = false;
+				return;
 			}
-			this.protocol = tokens[2];
-			if(!(this.method.equals("GET") || this.method.equals("POST")) || !this.protocol.startsWith("HTTP")) {
-				this.isValid = false;
+			String tokens[] = request.split("\n")[0].split("\\s+");
+			params = new HashMap<String, String>();
+			if(tokens.length == 3) {
+				method = tokens[0];
+				String[] temp = tokens[1].split("\\?");
+				path = temp[0];
+				if(temp.length > 1) {
+					addUrlParamsToMap(URLDecoder.decode(temp[1], "UTF-8"));
+				}
+				protocol = tokens[2];
+				if(!(method.equals("GET") || method.equals("POST")) || !protocol.startsWith("HTTP")) {
+					isValid = false;
+				}
+				else {
+					isValid = true;
+				}
 			}
 			else {
-				this.isValid = true;
+				isValid = false;
 			}
+			this.request = request;
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else {
-			isValid = false;
-		}
-		this.request = request;
+		
 	}
 	
-	private Map<String, String> addParamsToMap(String paramString) {
-		Map<String, String> params = new HashMap<String, String>();
+	private void addUrlParamsToMap(String paramString) {
 		String[] paramList = paramString.split("\\&");
 		for(String i : paramList) {
-			String[] temp = i.split("=");
-			if(temp.length > 1) {
-				params.put(temp[0], temp[1]);
-			}
+			addParamsToMap(i);
 		}
-		return params;
 	}
-
+	
+	public void addParamsToMap(String param) {
+		String[] paramMap = param.split("=");
+		if(paramMap.length > 1) {
+			params.put(paramMap[0], paramMap[1]);
+		}
+	}
+	
 	public String getMethod() {
 		return method;
 	}
@@ -90,7 +100,14 @@ public class HTTPRequest {
 		return params;
 	}
 
-	public void setParams(Map<String, String> params) {
-		this.params = params;
+	public void setParams(String parameterBody) {
+		if(!parameterBody.trim().isEmpty() && parameterBody != null) {
+			String[] paramList = parameterBody.split("\n");
+			for(String i : paramList) {
+				if(!i.isEmpty()) {
+					addParamsToMap(i);
+				}
+			}
+		}
 	}
 }

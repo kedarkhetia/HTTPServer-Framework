@@ -11,22 +11,17 @@ import com.google.gson.Gson;
 
 public class SlackClient {
 	private HttpURLConnection connection;
-	private static final String API_TOKEN = "xoxp-469171308900-470394212087-468620883488-7f6aaf6df2f123197d5bc244856ca25a";
-	private static final String CHANNEL = "test";
-	private static SlackClient slackClient;
+	private String apiToken;
+	private String channel;
 	
-	private SlackClient() {}
-	
-	public static SlackClient getInstance() {
-		if(slackClient == null) {
-			slackClient =  new SlackClient();
-		}
-		return slackClient;
+	public SlackClient(String apiToken, String channel) { 
+		this.apiToken = apiToken;
+		this.channel = channel;
 	}
 	
 	public boolean postMessage(String message) {
 		try {
-			connection = (HttpURLConnection) (new URL("https://slack.com/api/chat.postMessage?token="+API_TOKEN+"&channel="+CHANNEL+"&text=test:%20"+message)).openConnection();
+			connection = (HttpURLConnection) (new URL("https://slack.com/api/chat.postMessage?token="+apiToken+"&channel="+channel+"&text=test%20"+message)).openConnection();
 			connection.setRequestMethod("POST");
 			connection.setDoOutput(true);
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");

@@ -5,6 +5,11 @@ import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
 
 public class ChatHandler implements Handler{
+	SlackClient client;
+	
+	public ChatHandler(SlackClient client) {
+		this.client = client;
+	}
 
 	@Override
 	public HTTPResponse handle(HTTPRequest request) {
@@ -16,22 +21,34 @@ public class ChatHandler implements Handler{
 		}
 	}
 
-	private HTTPResponse post(HTTPRequest request) {
+	public HTTPResponse post(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
 		response.setResponseHeader(request.getProtocol(), "OK", 200);
-		String message = request.getParams().get("message");
-		response.setResponse(getResponseString(request, SlackClient.getInstance().postMessage(message)));
+		String message = null;
+		if(request.getParams() != null) {
+			message = request.getParams().get("message");
+			if(message != null) {
+				response.setResponse(getResponseString(request, client.postMessage(message)));
+			}
+			else {
+				response.setResponse(getResponseString(request, false));
+			}
+		}
+		else {
+			response.setResponse(getResponseString(request, false));
+		}
+		
 		return response;
 	}
 
-	private HTTPResponse get(HTTPRequest request) {
+	public HTTPResponse get(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
 		response.setResponseHeader(request.getProtocol(), "OK", 200);
 		response.setResponse(getResponseString(request, true));
 		return response;
 	}
 	
-	private String getResponseString(HTTPRequest request, boolean ok) {
+	public String getResponseString(HTTPRequest request, boolean ok) {
 		String responseString = "<html>"
 				+ "\n\t<head><script>"
 				+ "function getUrl() {"

@@ -149,21 +149,21 @@ public class InvertedIndexTests {
 	
 	@Test
 	public void testParamSearchPostHandler() {
-		HTTPRequest request = new HTTPRequest("POST /reviewsearch?query=B0023B1364 HTTP/1.1");
+		HTTPRequest request = new HTTPRequest("POST /reviewsearch?query=Hello%20World HTTP/1.1");
 		HTTPResponse response = connection.getResponse(request);
 		assertTrue(response.isValid());
 	}
 	
 	@Test
 	public void testParamResponseSearchPostHandler() {
-		HTTPRequest request = new HTTPRequest("POST /reviewsearch?query=B0023B1364 HTTP/1.1");
+		HTTPRequest request = new HTTPRequest("POST /reviewsearch?query=Hello HTTP/1.1");
 		HTTPResponse response = connection.getResponse(request);
 		assertEquals(response.getResponse(),reviewSearchHandler.getPostResponseString(invertedIndex.search("B0023B1364")));
 	}
 	
 	@Test
-	public void testMultiParamSearcPostRequest() {
-		HTTPRequest request = new HTTPRequest("POST /reviewsearch?notused=unused&query=B0023B1364 HTTP/1.1");
+	public void testMultiParamSearchPostRequest() {
+		HTTPRequest request = new HTTPRequest("POST /reviewsearch?notused=unused&query=Hello HTTP/1.1");
 		HTTPResponse response = connection.getResponse(request);
 		assertEquals(response.getResponse(), reviewSearchHandler.getPostResponseString(invertedIndex.search("B0023B1364")));
 	}

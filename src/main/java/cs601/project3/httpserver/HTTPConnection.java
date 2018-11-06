@@ -37,8 +37,9 @@ public class HTTPConnection implements Runnable {
 					length = Integer.parseInt(line.split(":")[1].trim());
 				}
 			}
-			requestString += "\n" + readBody(in, length);
+			String requestParams = readBody(in, length);
 			HTTPRequest request = new HTTPRequest(requestString);
+			request.setParams(requestParams);
 			HTTPResponse response = getResponse(request);
 			out.write(response.getResponseHeader());
 			out.write(response.getResponse());

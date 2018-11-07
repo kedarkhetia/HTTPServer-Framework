@@ -1,0 +1,8 @@
+{
+	"apiToken" : "xoxp-469171308900-470394212087-468620883488-7f6aaf6df2f123197d5bc244856ca25a",
+	"apiChannel" : "test",
+	"qaFilePath" : "qa.json",
+	"reviewFilePath" : "review.json",
+	"chatAppPort" : "9090",
+	"searchAppPort" : "8080"
+}

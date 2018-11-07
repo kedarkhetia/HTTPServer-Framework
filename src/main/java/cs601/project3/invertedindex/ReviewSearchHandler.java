@@ -53,6 +53,7 @@ public class ReviewSearchHandler implements Handler{
 	}
 	
 	public String getPostResponseString(List<Tuple> datalist) {
+		int count = 0;
 		String responseString = "<html>"
 				+ "\n\t<head>"
 				+ "\n\t\t<style>"
@@ -71,8 +72,12 @@ public class ReviewSearchHandler implements Handler{
 				+ "\n\t\t\t</tr>";
 		if(datalist != null) {
 			for(Tuple data : datalist) {
+				if(count > 50) {
+					break;
+				}
 				responseString += data.getObject().getHTMLText();
 				log.info("Sending HTML for, " + data.getObject().getText());
+				count++;
 			}
 		}
 		responseString += "\n\t\t</table>"

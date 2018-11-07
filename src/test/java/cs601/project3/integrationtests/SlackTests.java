@@ -49,7 +49,7 @@ public class SlackTests {
 	public void testResponseGetHandler() {
 		HTTPRequest request = new HTTPRequest("GET /slackbot HTTP/1.1");
 		HTTPResponse response = connection.getResponse(request);
-		assertEquals(response.getResponse(), chatHandler.getResponseString(request, true));
+		assertEquals(response.getResponse(), chatHandler.getResponseString(true));
 	}
 	
 	@Test
@@ -63,7 +63,7 @@ public class SlackTests {
 	public void testParamResponseGetHandler() {
 		HTTPRequest request = new HTTPRequest("GET /slackbot?unused=notused HTTP/1.1");
 		HTTPResponse response = connection.getResponse(request);
-		assertEquals(response.getResponse(), chatHandler.getResponseString(request, true));
+		assertEquals(response.getResponse(), chatHandler.getResponseString(true));
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class SlackTests {
 		when(client.postMessage(null)).thenReturn(false);
 		HTTPRequest request = new HTTPRequest("POST /slackbot HTTP/1.1");
 		HTTPResponse response = connection.getResponse(request);
-		assertEquals(response.getResponse(), chatHandler.getResponseString(request, false));
+		assertEquals(response.getResponse(), chatHandler.getResponseString(false));
 	}
 	
 	@Test
@@ -95,7 +95,7 @@ public class SlackTests {
 		when(client.postMessage("somemessage")).thenReturn(true);
 		HTTPRequest request = new HTTPRequest("POST /slackbot?message=somemessage HTTP/1.1");
 		HTTPResponse response = connection.getResponse(request);
-		assertEquals(response.getResponse(), chatHandler.getResponseString(request, true));
+		assertEquals(response.getResponse(), chatHandler.getResponseString(true));
 	}
 	
 	@Test
@@ -103,6 +103,6 @@ public class SlackTests {
 		when(client.postMessage("somemessage")).thenReturn(true);
 		HTTPRequest request = new HTTPRequest("POST /slackbot?notused=unused&message=somemessage HTTP/1.1");
 		HTTPResponse response = connection.getResponse(request);
-		assertEquals(response.getResponse(), chatHandler.getResponseString(request, true));
+		assertEquals(response.getResponse(), chatHandler.getResponseString(true));
 	}
 }

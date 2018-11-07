@@ -102,7 +102,7 @@ public class HTTPRequest {
 
 	public void setParams(String parameterBody) {
 		if(!parameterBody.trim().isEmpty() && parameterBody != null) {
-			String[] paramList = parameterBody.split("\n");
+			String[] paramList = parameterBody.split("\\&");
 			for(String i : paramList) {
 				if(!i.isEmpty()) {
 					addParamsToMap(i);

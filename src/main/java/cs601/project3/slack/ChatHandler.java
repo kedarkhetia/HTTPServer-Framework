@@ -1,6 +1,7 @@
 package cs601.project3.slack;
 
 import cs601.project3.handler.Handler;
+import cs601.project3.httpserver.HTTPConstants;
 import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
 
@@ -23,19 +24,19 @@ public class ChatHandler implements Handler{
 
 	public HTTPResponse post(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setResponseHeader(request.getProtocol(), "OK", 200);
+		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);
 		String message = null;
 		if(request.getParams() != null) {
 			message = request.getParams().get("message");
 			if(message != null) {
-				response.setResponse(getResponseString(request, client.postMessage(message)));
+				response.setResponse(getResponseString(client.postMessage(message)));
 			}
 			else {
-				response.setResponse(getResponseString(request, false));
+				response.setResponse(getResponseString(false));
 			}
 		}
 		else {
-			response.setResponse(getResponseString(request, false));
+			response.setResponse(getResponseString(false));
 		}
 		
 		return response;
@@ -43,16 +44,16 @@ public class ChatHandler implements Handler{
 
 	public HTTPResponse get(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setResponseHeader(request.getProtocol(), "OK", 200);
-		response.setResponse(getResponseString(request, true));
+		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);
+		response.setResponse(getResponseString(true));
 		return response;
 	}
 	
-	public String getResponseString(HTTPRequest request, boolean ok) {
+	public String getResponseString(boolean ok) {
 		String responseString = "<html>"
 				+ "\n\t<head><script>"
 				+ "function getUrl() {"
-				+ "document.getElementById(\'messageform\').action = \""+request.getPath()+"?message=\" + document.getElementById(\'message\').value;"
+				+ "document.getElementById(\'messageform\').action = \"/slackbot?message=\" + document.getElementById(\'message\').value;"
 				+ "}</script>"
 				+ "\n\t</head>"
 				+ "\n\t<body>"
@@ -62,9 +63,9 @@ public class ChatHandler implements Handler{
 		}
 		
 		responseString+= "\n\t\t<form method=\"POST\" id=\"messageform\" onsubmit=\"getUrl()\">"
-				+ "\n\t\t\tWrite Message to Send as BOT:<br>"
-				+ "\n\t\t\t<input type=\"text\" id=\"message\" name=\"message\">"
-				+ "\n\t\t\t<br>"
+				+ "\n\t\t\tWrite Message to Send as BOT:<br/>"
+				+ "\n\t\t\t<input type=\"text\" id=\"message\" name=\"message\" />"
+				+ "\n\t\t\t<br/>"
 				+ "\n\t\t</form>"
 				+ "\n\t\t\t<button type=\"submit\" form=\"messageform\" value=\"Submit\">Submit</button>"
 				+ "\n\t</body>"

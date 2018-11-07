@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cs601.project3.handler.Handler;
+import cs601.project3.httpserver.HTTPConstants;
 import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
 
@@ -27,16 +28,18 @@ public class ReviewSearchHandler implements Handler{
 
 	public synchronized HTTPResponse post(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setResponseHeader(request.getProtocol(), "OK", 200);
+		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);
 		String[] searchText = null;
 		List<Tuple> reviews = new LinkedList<Tuple>();
 		if(!request.getParams().isEmpty()) {
-			searchText = request.getParams().get("query").split("\\s+");
-			for(String queryText : searchText){
-				if(queryText != null && !queryText.isEmpty()) {
-					List<Tuple> result = invertedIndex.search(queryText);
-					if(result != null) {
-						reviews.addAll(result);
+			if(request.getParams().get("query") != null) {
+				searchText = request.getParams().get("query").split("\\s+");
+				for(String queryText : searchText){
+					if(queryText != null && !queryText.isEmpty()) {
+						List<Tuple> result = invertedIndex.search(queryText);
+						if(result != null) {
+							reviews.addAll(result);
+						}
 					}
 				}
 			}
@@ -69,13 +72,13 @@ public class ReviewSearchHandler implements Handler{
 		}
 		responseString += "\n\t\t</table>"
 				+ "\n\t</body>"
-				+ "<html>";
+				+ "</html>";
 		return responseString;
 	}
 
 	public synchronized HTTPResponse get(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setResponseHeader(request.getProtocol(), "OK", 200);
+		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);
 		response.setResponse(getGetResponseString());
 		return response;
 	}
@@ -90,9 +93,9 @@ public class ReviewSearchHandler implements Handler{
 				+ "\n\t<body>"
 				+ "\n\t\t<h2>Review Search</h2>"
 				+ "\n\t\t<form method=\"POST\" id=\"reviewsearch\" onsubmit=\"getUrl()\">"
-				+ "\n\t\t\tSearch Text:<br>"
-				+ "\n\t\t\t<input type=\"text\" id=\"text\" name=\"text\">"
-				+ "\n\t\t\t<br>"
+				+ "\n\t\t\tSearch Text:<br/>"
+				+ "\n\t\t\t<input type=\"text\" id=\"text\" name=\"text\" />"
+				+ "\n\t\t\t<br/>"
 				+ "\n\t\t</form>"
 				+ "\n\t\t\t<button type=\"submit\" form=\"reviewsearch\" value=\"Submit\">Submit</button>"
 				+ "\n\t</body>"

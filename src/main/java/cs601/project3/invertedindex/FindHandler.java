@@ -3,6 +3,7 @@ package cs601.project3.invertedindex;
 import java.util.List;
 
 import cs601.project3.handler.Handler;
+import cs601.project3.httpserver.HTTPConstants;
 import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
 
@@ -26,7 +27,7 @@ public class FindHandler implements Handler {
 
 	public synchronized HTTPResponse post(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setResponseHeader(request.getProtocol(), "OK", 200);
+		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);
 		String asin = null;
 		if(request.getParams() != null) {
 			asin = request.getParams().get("asin");
@@ -60,13 +61,13 @@ public class FindHandler implements Handler {
 		}
 		responseString += "\n\t\t</table>"
 				+ "\n\t</body>"
-				+ "<html>";
+				+ "</html>";
 		return responseString;
 	}
 
 	public synchronized HTTPResponse get(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
-		response.setResponseHeader(request.getProtocol(), "OK", 200);
+		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);
 		response.setResponse(getGetResponseString());
 		return response;
 	}
@@ -81,9 +82,9 @@ public class FindHandler implements Handler {
 				+ "\n\t<body>"
 				+ "\n\t\t<h2>Find ASIN</h2>"
 				+ "\n\t\t<form method=\"POST\" id=\"findasin\" onsubmit=\"getUrl()\">"
-				+ "\n\t\t\tASIN:<br>"
-				+ "\n\t\t\t<input type=\"text\" id=\"asin\" name=\"asin\">"
-				+ "\n\t\t\t<br>"
+				+ "\n\t\t\tASIN:<br/>"
+				+ "\n\t\t\t<input type=\"text\" id=\"asin\" name=\"asin\" />"
+				+ "\n\t\t\t<br/>"
 				+ "\n\t\t</form>"
 				+ "\n\t\t\t<button type=\"submit\" form=\"findasin\" value=\"Submit\">Submit</button>"
 				+ "\n\t</body>"

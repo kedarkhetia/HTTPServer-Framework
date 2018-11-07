@@ -1,5 +1,11 @@
 package cs601.project3.httpserver;
 
+/**
+ * It is a Model class to represent HTTPResponse
+ * 
+ * @author kmkhetia
+ *
+ */
 public class HTTPResponse {
 	private String protocol;
 	private int statusCode;

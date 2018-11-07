@@ -22,7 +22,13 @@ import cs601.project3.invertedindex.ReviewSearchHandler;
 
 public class InvertedIndexDriver {
 	private final static Logger log = LogManager.getLogger(ChatDriver.class);
-	
+	/**
+	 * This function is main function that will configure
+	 * Inverted Index application
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 		Gson gson = new Gson();
 		Config config = gson.fromJson(readFile(Paths.get(args[1])), Config.class);

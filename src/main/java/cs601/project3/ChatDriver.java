@@ -19,6 +19,13 @@ import cs601.project3.slack.SlackClient;
 public class ChatDriver {
 	private final static Logger log = LogManager.getLogger(ChatDriver.class);
 	
+	/**
+	 * The function is main function that will configure
+	 * chat application
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 		Gson gson = new Gson();
 		log.info("Config file path received as " + args[1]);

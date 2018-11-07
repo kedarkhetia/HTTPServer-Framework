@@ -9,6 +9,13 @@ import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
 import cs601.project3.invertedindex.FindHandler;
 
+/**
+ * It belongs to chat Application. It exposes 
+ * Chat APIs of Slack app.
+ * 
+ * @author kmkhetia
+ *
+ */
 public class ChatHandler implements Handler{
 	SlackClient client;
 	
@@ -25,7 +32,14 @@ public class ChatHandler implements Handler{
 			return post(request);
 		}
 	}
-
+	
+	/**
+	 * This method is called when the post request
+	 * comes to the server for Chat API.
+	 * 
+	 * @param request
+	 * @return
+	 */
 	public HTTPResponse post(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
 		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);
@@ -45,7 +59,14 @@ public class ChatHandler implements Handler{
 		
 		return response;
 	}
-
+	
+	/**
+	 * This method is called when the get request
+	 * comes to the server for Chat API.
+	 * 
+	 * @param request
+	 * @return
+	 */
 	public HTTPResponse get(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
 		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);

@@ -1,5 +1,12 @@
 package cs601.project3.slack;
 
+/**
+ * This is the model class to represent the message 
+ * received from the slack api.
+ * 
+ * @author kmkhetia
+ *
+ */
 public class Message {
 	private String text;
 	private String username;

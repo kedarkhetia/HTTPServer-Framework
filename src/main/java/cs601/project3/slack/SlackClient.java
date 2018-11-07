@@ -12,6 +12,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 
+/**
+ * A Slack Client gateway for applications to communicate
+ * with Slack API.
+ * 
+ * @author kmkhetia
+ *
+ */
 public class SlackClient {
 	private final static Logger log = LogManager.getLogger(SlackClient.class);
 
@@ -24,6 +31,12 @@ public class SlackClient {
 		this.channel = channel;
 	}
 	
+	/**
+	 * This function is used to post a message to slack channel.
+	 * 
+	 * @param message
+	 * @return
+	 */
 	public boolean postMessage(String message) {
 		try {
 			log.info("Sending message, " + message);
@@ -39,6 +52,13 @@ public class SlackClient {
 		return false;
 	}
 	
+	/**
+	 * This function is used to validate response received from Slack.
+	 * 
+	 * @param connection
+	 * @return boolean
+	 * @throws IOException
+	 */
 	private boolean validateResponse(URLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String line;

@@ -8,6 +8,12 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * It is a Model class to represent HTTPRequest
+ * 
+ * @author kmkhetia
+ *
+ */
 public class HTTPRequest {
 	private final static Logger log = LogManager.getLogger(HTTPRequest.class);
 	
@@ -50,14 +56,22 @@ public class HTTPRequest {
 		}
 		
 	}
-	
+	/**
+	 * This method will add URL parameters to params.
+	 * 
+	 * @param paramString
+	 */
 	private void addUrlParamsToMap(String paramString) {
 		String[] paramList = paramString.split("\\&");
 		for(String i : paramList) {
 			addParamsToMap(i);
 		}
 	}
-	
+	/**
+	 * This method will add parameters to params Map.
+	 * 
+	 * @param param
+	 */
 	public void addParamsToMap(String param) {
 		String[] paramMap = param.split("=");
 		if(paramMap.length > 1) {
@@ -103,7 +117,12 @@ public class HTTPRequest {
 	public Map<String, String> getParams() {
 		return params;
 	}
-
+	
+	/**
+	 * This method will add Body parameters to params.
+	 * 
+	 * @param parameterBody
+	 */
 	public void setParams(String parameterBody) {
 		if(!parameterBody.trim().isEmpty() && parameterBody != null) {
 			String[] paramList = parameterBody.split("\\&");

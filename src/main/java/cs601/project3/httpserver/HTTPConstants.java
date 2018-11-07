@@ -1,5 +1,11 @@
 package cs601.project3.httpserver;
 
+/**
+ * It stores the HTTP response status and status codes.
+ * 
+ * @author kmkhetia
+ *
+ */
 public final class HTTPConstants {
 	
 	//OK

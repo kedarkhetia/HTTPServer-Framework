@@ -1,5 +1,13 @@
 package cs601.project3.config;
 
+/**
+ * This class is data model to represent config file.
+ * It has mainly setters and getters for reading 
+ * and wiriting the config properties.
+ * 
+ * @author kmkhetia
+ *
+ */ 
 public class Config {
 	private String apiToken;
 	private String apiChannel;

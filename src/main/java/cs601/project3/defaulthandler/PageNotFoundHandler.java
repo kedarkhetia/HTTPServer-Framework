@@ -5,6 +5,13 @@ import cs601.project3.httpserver.HTTPConstants;
 import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
 
+/**
+ * This is a handler class for situation when
+ * requested path is not configured by Application.
+ * 
+ * @author kmkhetia
+ *
+ */ 
 public class PageNotFoundHandler implements Handler{
 	
 	@Override

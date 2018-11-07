@@ -10,7 +10,13 @@ import cs601.project3.httpserver.HTTPConstants;
 import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
 
-
+/**
+ * This class belongs to SearchApplication. It exposes
+ * find API for invertedIndex.
+ * 
+ * @author kmkhetia
+ *
+ */ 
 public class FindHandler implements Handler {
 	private final static Logger log = LogManager.getLogger(FindHandler.class);
 
@@ -21,7 +27,7 @@ public class FindHandler implements Handler {
 	}
 	
 	@Override
-	public synchronized HTTPResponse handle(HTTPRequest request) {
+	public HTTPResponse handle(HTTPRequest request) {
 		if(request.getMethod().equals("GET")) {
 			return get(request);
 		}
@@ -29,8 +35,14 @@ public class FindHandler implements Handler {
 			return post(request);
 		}
 	}
-
-	public synchronized HTTPResponse post(HTTPRequest request) {
+	/**
+	 * This method is called when the post request
+	 * comes to the server for find API.
+	 * 
+	 * @param request
+	 * @return response
+	 */
+	public HTTPResponse post(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
 		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);
 		String asin = null;
@@ -71,7 +83,14 @@ public class FindHandler implements Handler {
 		return responseString;
 	}
 
-	public synchronized HTTPResponse get(HTTPRequest request) {
+	/**
+	 * This method is called when the get request
+	 * comes to the server for Find API.
+	 * 
+	 * @param request
+	 * @return response
+	 */
+	public HTTPResponse get(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
 		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);
 		response.setResponse(getGetResponseString());

@@ -11,6 +11,14 @@ import cs601.project3.httpserver.HTTPConstants;
 import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
 
+/**
+ * 
+ * This class belongs to SearchApplication. It exposes
+ * search API for invertedIndex.
+ * 
+ * @author kmkhetia
+ *
+ */
 public class ReviewSearchHandler implements Handler{
 	private final static Logger log = LogManager.getLogger(FindHandler.class);
 
@@ -29,7 +37,14 @@ public class ReviewSearchHandler implements Handler{
 			return post(request);
 		}
 	}
-
+	
+	/**
+	 * This method is called when the post request
+	 * comes to the server for ReviewSearch API.
+	 * 
+	 * @param request
+	 * @return response
+	 */
 	public synchronized HTTPResponse post(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
 		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);
@@ -85,7 +100,14 @@ public class ReviewSearchHandler implements Handler{
 				+ "</html>";
 		return responseString;
 	}
-
+	
+	/**
+	 * This method is called when the get request
+	 * comes to the server ReviewSearch API.
+	 * 
+	 * @param request
+	 * @return response
+	 */
 	public synchronized HTTPResponse get(HTTPRequest request) {
 		HTTPResponse response = new HTTPResponse();
 		response.setResponseHeader(request.getProtocol(), HTTPConstants.STATUS_OK, HTTPConstants.STATUS_CODE_OK);

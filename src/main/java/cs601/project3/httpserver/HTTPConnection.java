@@ -8,11 +8,16 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cs601.project3.defaulthandler.MethodNotAllowed;
 import cs601.project3.defaulthandler.PageNotFoundHandler;
 import cs601.project3.handler.Handler;
 
 public class HTTPConnection implements Runnable {
+	private final static Logger log = LogManager.getLogger(HTTPConnection.class);
+	
 	private HashMap<String, Handler> handlers;
 	private Socket client;
 	private InputStream in;
@@ -23,6 +28,7 @@ public class HTTPConnection implements Runnable {
 		this.client = client;
 		this.in = in;
 		this.out = out;
+		log.info("Received client: " + client);
 	}
 	
 	@Override
@@ -37,12 +43,16 @@ public class HTTPConnection implements Runnable {
 					length = Integer.parseInt(line.split(":")[1].trim());
 				}
 			}
+			log.info("Received request: " + requestString);
 			String requestParams = readBody(in, length);
+			log.info("Received request body: " + requestParams);
 			HTTPRequest request = new HTTPRequest(requestString);
 			request.setParams(requestParams);
 			HTTPResponse response = getResponse(request);
 			out.write(response.getResponseHeader());
+			log.info("Responding response header: " + response.getResponseHeader());
 			out.write(response.getResponse());
+			log.info("Responding response body: " + response.getResponse());
 			out.close();
 			in.close();
 			client.close();
@@ -56,13 +66,16 @@ public class HTTPConnection implements Runnable {
 		HTTPResponse response;
 		if(!request.isValid()) {
 			response = new MethodNotAllowed().handle(request);
+			log.info("Invalid request in Method, valid:" + request.isValid() );
 		}
 		else {
 			if(handlers.containsKey(request.getPath())) {
 				response = handlers.get(request.getPath()).handle(request);
+				log.info("Invalid path requested, Path:" + request.getPath() + " valid:" + request.isValid());
 			}
 			else {
 				response = new PageNotFoundHandler().handle(request);
+				log.info("Invalid path requested, Path:" + request.getPath() + " valid:" + request.isValid());
 			}
 		}
 		return response;

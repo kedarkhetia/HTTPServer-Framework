@@ -2,6 +2,9 @@ package cs601.project3.invertedindex;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cs601.project3.handler.Handler;
 import cs601.project3.httpserver.HTTPConstants;
 import cs601.project3.httpserver.HTTPRequest;
@@ -9,6 +12,8 @@ import cs601.project3.httpserver.HTTPResponse;
 
 
 public class FindHandler implements Handler {
+	private final static Logger log = LogManager.getLogger(FindHandler.class);
+
 	private InvertedIndex invertedIndex;
 	
 	public FindHandler(InvertedIndex invertedIndex) {
@@ -57,6 +62,7 @@ public class FindHandler implements Handler {
 		if(datalist != null) {
 			for(AmazonDataStructure data : datalist) {
 				responseString += data.getHTMLText();
+				log.info("Sending HTML for, " + data.getText());
 			}
 		}
 		responseString += "\n\t\t</table>"

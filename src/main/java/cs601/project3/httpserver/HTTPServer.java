@@ -10,9 +10,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cs601.project3.handler.Handler;
 
 public class HTTPServer implements Runnable{
+	private final static Logger log = LogManager.getLogger(HTTPServer.class);
+	
 	private ServerSocket server;
 	private ExecutorService threadPool;
 	private HashMap<String, Handler> handlers;
@@ -28,7 +33,7 @@ public class HTTPServer implements Runnable{
 			this.handlers = new HashMap<String, Handler>();
 			this.port = port;
 		} catch (IOException e) {
-			//TODO log something.
+			log.error("IOException occured: " + e);
 		}
 	}
 	
@@ -48,8 +53,7 @@ public class HTTPServer implements Runnable{
 				threadPool.execute(new HTTPConnection(handlers, client, in, out));
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("IOException occured: " + e);
 		}
 	}
 	

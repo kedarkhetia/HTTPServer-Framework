@@ -7,9 +7,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.Gson;
 
 public class SlackClient {
+	private final static Logger log = LogManager.getLogger(SlackClient.class);
+
 	private HttpURLConnection connection;
 	private String apiToken;
 	private String channel;
@@ -21,6 +26,7 @@ public class SlackClient {
 	
 	public boolean postMessage(String message) {
 		try {
+			log.info("Sending message, " + message);
 			connection = (HttpURLConnection) (new URL("https://slack.com/api/chat.postMessage?token="+apiToken+"&channel="+channel+"&text=test%20"+message)).openConnection();
 			connection.setRequestMethod("POST");
 			connection.setDoOutput(true);
@@ -28,7 +34,7 @@ public class SlackClient {
 			connection.connect();
 			return validateResponse(connection);
 		} catch (IOException e) {
-			// TODO log exception
+			log.error("IOException Occured, " + e);
 		}
 		return false;
 	}
@@ -42,6 +48,7 @@ public class SlackClient {
 			response += line;
 		}
 		SlackResponse slackResponse = json.fromJson(response, SlackResponse.class);
+		log.info("Received response from slack, " + slackResponse);
 		return slackResponse.getOk(); 
 	}
 }

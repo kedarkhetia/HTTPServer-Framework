@@ -3,12 +3,16 @@ package cs601.project3.invertedindex;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cs601.project3.handler.Handler;
 import cs601.project3.httpserver.HTTPConstants;
 import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
 
 public class ReviewSearchHandler implements Handler{
+	private final static Logger log = LogManager.getLogger(FindHandler.class);
 
 	private InvertedIndex invertedIndex;
 	
@@ -68,6 +72,7 @@ public class ReviewSearchHandler implements Handler{
 		if(datalist != null) {
 			for(Tuple data : datalist) {
 				responseString += data.getObject().getHTMLText();
+				log.info("Sending HTML for, " + data.getObject().getText());
 			}
 		}
 		responseString += "\n\t\t</table>"

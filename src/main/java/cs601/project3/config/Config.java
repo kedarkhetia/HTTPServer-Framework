@@ -38,10 +38,10 @@ public class Config {
 	public void setChatAppPort(int chatAppPort) {
 		this.chatAppPort = chatAppPort;
 	}
-	public int getInvertedIndexAppPort() {
+	public int getSearchAppPort() {
 		return searchAppPort;
 	}
-	public void setInvertedIndexAppPort(int searchAppPort) {
+	public void setSearchAppPort(int searchAppPort) {
 		this.searchAppPort = searchAppPort;
 	}
 }

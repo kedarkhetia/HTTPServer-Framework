@@ -5,7 +5,12 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class HTTPRequest {
+	private final static Logger log = LogManager.getLogger(HTTPRequest.class);
+	
 	private String request;
 	private String method;
 	private String path;
@@ -41,8 +46,7 @@ public class HTTPRequest {
 			}
 			this.request = request;
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("UnsupportedEncodingException Occured, " + e);
 		}
 		
 	}

@@ -1,9 +1,13 @@
 package cs601.project3.slack;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cs601.project3.handler.Handler;
 import cs601.project3.httpserver.HTTPConstants;
 import cs601.project3.httpserver.HTTPRequest;
 import cs601.project3.httpserver.HTTPResponse;
+import cs601.project3.invertedindex.FindHandler;
 
 public class ChatHandler implements Handler{
 	SlackClient client;

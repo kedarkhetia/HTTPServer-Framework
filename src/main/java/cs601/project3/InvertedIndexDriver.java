@@ -6,6 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.Gson;
 
 import cs601.project3.config.Config;
@@ -18,11 +21,13 @@ import cs601.project3.invertedindex.Review;
 import cs601.project3.invertedindex.ReviewSearchHandler;
 
 public class InvertedIndexDriver {
+	private final static Logger log = LogManager.getLogger(ChatDriver.class);
 	
 	public static void main(String[] args) throws IOException {
 		Gson gson = new Gson();
 		Config config = gson.fromJson(readFile(Paths.get(args[1])), Config.class);
-		HTTPServer server = new HTTPServer(config.getInvertedIndexAppPort());
+		log.info("Config file path received as " + args[1]);
+		HTTPServer server = new HTTPServer(config.getSearchAppPort());
 		new InvertedIndexBuilder()
 				.setFilePath(Paths.get(config.getQaFilePath()))
 				.setType(QuestionAnswer.class)
@@ -34,6 +39,7 @@ public class InvertedIndexDriver {
 		server.addMapping("/find", new FindHandler(invertedIndexReview));
 		server.addMapping("/reviewsearch", new ReviewSearchHandler(invertedIndexReview));
 		server.start();
+		log.info("SearchApplication started on port: " + config.getSearchAppPort());
 	}
 	
 	/**
@@ -52,7 +58,7 @@ public class InvertedIndexDriver {
 				sb.append(line);
 			}
 		} catch (IOException e) {
-			//log.error("Please check provided File IOException occured, ", e);
+			log.error("Please check provided File IOException occured, ", e);
 		}
 		return sb.toString();
 	}

@@ -1,4 +1,4 @@
-Project 3 - HTTP Server
+HTTPServer-Framework
 =======================================
 
 For this project, I have implemented an HTTP server, two web applications, and a full suite of tests. I have used following concepts:
